@@ -28,21 +28,21 @@ export class Movie {
     return this.description;
   }
 
-  setReleaseYear(releaseYear : number) : void{
+  setReleaseYear(releaseYear: number): void {
     this.releaseYear = releaseYear;
   }
-  getReleaseYear() : number {
+  getReleaseYear(): number {
     return this.releaseYear;
   }
 
-  setGenre(genre : string) : void {
+  setGenre(genre: string): void {
     this.genre = genre;
   }
-  getGenre() : string {
+  getGenre(): string {
     return this.genre;
   }
 
-  getDirectorId() : UUID {
+  getDirectorId(): UUID {
     return this.directorId;
   }
 }
