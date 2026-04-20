@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "express": "^5.2.1",
+    "mysql2": "^3.22.1"
+  },
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Desafio compass fullstack",
+  "main": "index.js",
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.6.0",
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  },
+  "scripts": {
+    "ndev": "nodemon --watch src --ext ts --exec \"npm run dev\"",
+    "dev": "node --loader ts-node/esm src/app.ts"
+  },
+  "keywords": [],
+  "author": "João Victor",
+  "license": "ISC",
+  "type": "module"
+}

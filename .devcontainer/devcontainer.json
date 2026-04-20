@@ -1,0 +1,7 @@
+{
+  "name": "Desafio dev",
+	"dockerComposeFile": "../docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspace/app",
+  "remoteUser": "node"
+}
