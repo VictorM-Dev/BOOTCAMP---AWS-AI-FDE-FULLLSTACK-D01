@@ -1,12 +1,10 @@
-import type { UUID } from "node:crypto";
-
 export class Director {
   constructor(
-    private readonly id: UUID,
+    private readonly id: string,
     private name: string,
   ) {}
 
-  getId(): UUID {
+  getId(): string {
     return this.id;
   }
 

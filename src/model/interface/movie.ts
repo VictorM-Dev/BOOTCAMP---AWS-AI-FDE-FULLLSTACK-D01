@@ -2,15 +2,15 @@ import type { UUID } from "node:crypto";
 
 export class Movie {
   constructor(
-    private readonly id: UUID,
+    private readonly id: string,
     private title: string,
     private description: string,
     private releaseYear: number,
     private genre: string,
-    private readonly directorId: UUID,
+    private readonly directorId: string,
   ) {}
 
-  getId(): UUID {
+  getId(): string {
     return this.id;
   }
 
@@ -42,7 +42,7 @@ export class Movie {
     return this.genre;
   }
 
-  getDirectorId(): UUID {
+  getDirectorId(): string {
     return this.directorId;
   }
 }
