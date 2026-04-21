@@ -3,5 +3,13 @@
 	"dockerComposeFile": "../docker-compose.yml",
 	"service": "app",
 	"workspaceFolder": "/workspace/app",
-  "remoteUser": "node"
+  "remoteUser": "node",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"prisma.prisma",
+				"esbenp.prettier-vscode"
+			]
+		}
+	}
 }
