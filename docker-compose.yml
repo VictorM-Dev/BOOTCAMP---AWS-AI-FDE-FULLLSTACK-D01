@@ -19,7 +19,7 @@ services:
     ports:
       - "3001:5432"
     environment:
-      POSTGRES_USER: postgres
+      POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     volumes:
