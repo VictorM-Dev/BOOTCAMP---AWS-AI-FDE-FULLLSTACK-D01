@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   app:
     container_name: application
@@ -6,19 +7,24 @@ services:
       context: .
       dockerfile: .devcontainer/Dockerfile
     ports:
-     - "3000:3000"
+      - "3000:3000"
     volumes:
       - .:/workspace/app
     depends_on:
       - db
+
   db:
-    image: mysql:8.0 
+    image: postgres:16
     container_name: dataBase
     ports:
-      - "3001:3306"
+      - "3001:5432"
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
   adminer:
     image: adminer
     container_name: adminer
@@ -26,3 +32,6 @@ services:
       - "8080:8080"
     depends_on:
       - db
+
+volumes:
+  pgdata:
