@@ -45,4 +45,17 @@ export default class DirectorRepository {
     });
     console.log("Repository: Director delete sucessfully");
   }
+
+  //Using for validation in service
+  async findDirectorByName(name : string){
+    const dataDirector = await prisma.director.findUnique({
+      where: {name: name}
+    });
+    if (dataDirector) {
+      console.log("Repository: Director found successfully");
+      return new Director(dataDirector.id, dataDirector.name);
+    }
+    console.log("Repository: Director not found");
+    return null;
+  }
 }
