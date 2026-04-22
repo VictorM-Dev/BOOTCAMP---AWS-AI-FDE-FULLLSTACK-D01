@@ -1,4 +1,5 @@
 import { Director } from "../model/interface/director.js";
+import { Movie } from "../model/interface/movie.js";
 import prisma from "../database/prisma.js";
 import type { IDirectorRepository } from "./interface/iDirectorRepository.js";
 
@@ -50,5 +51,26 @@ export default class DirectorRepository implements IDirectorRepository {
       return new Director(dataDirector.id, dataDirector.name);
     }
     return null;
+  }
+
+  async findMoviesByDirectorId(id: string): Promise<Movie[]> {
+    const dataDirector = await prisma.director.findUnique({
+      where: { id },
+      include: {
+        movies: true,
+      },
+    });
+    if (!dataDirector) return [];
+    return dataDirector.movies.map(
+      (movie) =>
+        new Movie(
+          movie.id,
+          movie.title,
+          movie.description,
+          movie.releaseYear,
+          movie.genre,
+          movie.directorId,
+        ),
+    );
   }
 }

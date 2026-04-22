@@ -1,6 +1,7 @@
 import { Director } from "../model/interface/director.js";
 import { AppError } from "../middlewares/appError.js";
 import type { IDirectorRepository } from "../repository/interface/iDirectorRepository.js";
+import { Movie } from "../model/interface/movie.js";
 
 export default class DirectoryService {
   constructor(private directoryRepository: IDirectorRepository) {}
@@ -58,5 +59,16 @@ export default class DirectoryService {
       throw new AppError("Director not found", 404);
     }
     this.directoryRepository.deleteDirector(id);
+  }
+
+  async findMoviesByDirectorId(id: string): Promise<Movie[]> {
+    const dataDirector = await this.directoryRepository.findDirectorById(id);
+    if (!dataDirector) {
+      console.log("Director not found");
+      throw new AppError("Director not found", 404);
+    }
+    const dataDirectorMovies = await this.directoryRepository.findMoviesByDirectorId(id);
+    return dataDirectorMovies;
+    
   }
 }

@@ -1,6 +1,7 @@
 import { expect, test, vi } from "vitest";
 import DirectoryService from "../../src/service/directorService.js";
 import { Director } from "../../src/model/interface/director.js";
+import { Movie } from "../../src/model/interface/movie.js";
 
 const mockRepository = {
   createDirector: vi.fn(),
@@ -9,6 +10,7 @@ const mockRepository = {
   findAllDirector: vi.fn(),
   updateDirector: vi.fn(),
   deleteDirector: vi.fn(),
+  findMoviesByDirectorId: vi.fn(),
 };
 
 const service = new DirectoryService(mockRepository);
@@ -122,8 +124,29 @@ test("delete sucessfully", async () => {
     id: "1",
     name: "João",
   });
-  //The return in service is null
+  //The return in service is void
   mockRepository.deleteDirector.mockResolvedValue(undefined);
   await service.deleteDirector("1");
   expect(mockRepository.deleteDirector).toHaveBeenCalledWith("1");
+});
+
+test("find movies director is empty", async () => {
+  mockRepository.findMoviesByDirectorId.mockResolvedValue([]);
+  const result = await service.findMoviesByDirectorId("1");
+  expect(result).toEqual([]);
+});
+
+test("find movies director", async () => {
+  mockRepository.findDirectorById.mockResolvedValue({ id: "1", name: "João" });
+  const dataMovie = new Movie("1", "file", "descrição", 1999, "ação", "1");
+  mockRepository.findMoviesByDirectorId.mockResolvedValue([dataMovie]);
+  const result = await service.findMoviesByDirectorId("1");
+  expect(result).toEqual([dataMovie]);
+});
+
+test("find movies director not found", async () => {
+  mockRepository.findDirectorById.mockResolvedValue(null);
+  await expect(service.findMoviesByDirectorId("1")).rejects.toThrow(
+    "Director not found",
+  );
 });
