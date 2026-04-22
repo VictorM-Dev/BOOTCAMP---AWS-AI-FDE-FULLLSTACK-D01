@@ -6,4 +6,5 @@ export interface IDirectorRepository {
   findDirectorById(id: string): Promise<Director | null>;
   findAllDirector(): Promise<Director[]>;
   updateDirector(director: Director): Promise<Director>;
+  deleteDirector(id: string): Promise<void>;
 }

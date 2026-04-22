@@ -8,6 +8,7 @@ const mockRepository = {
   findDirectorById: vi.fn(),
   findAllDirector: vi.fn(),
   updateDirector: vi.fn(),
+  deleteDirector: vi.fn(),
 };
 
 const service = new DirectoryService(mockRepository);
@@ -107,4 +108,22 @@ test("update: director sucessfully", async () => {
   mockRepository.updateDirector.mockResolvedValue(dataDirectorUpdate);
   const result = await service.updateDirector(dataDirectorUpdate);
   expect(result).toEqual(dataDirectorUpdate);
+});
+
+test("delete: director not found", async () => {
+  mockRepository.findDirectorById.mockResolvedValue(null);
+  await expect(service.deleteDirector("1")).rejects.toThrow(
+    "Director not found",
+  );
+});
+
+test("delete sucessfully", async () => {
+  mockRepository.findDirectorById.mockResolvedValue({
+    id: "1",
+    name: "João",
+  });
+  //The return in service is null
+  mockRepository.deleteDirector.mockResolvedValue(undefined);
+  await service.deleteDirector("1");
+  expect(mockRepository.deleteDirector).toHaveBeenCalledWith("1");
 });
