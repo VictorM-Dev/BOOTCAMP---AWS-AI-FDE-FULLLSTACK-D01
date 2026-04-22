@@ -7,8 +7,17 @@ export default class DirectoryService {
   async createDirector(name: string): Promise<Director> {
     const exists = await this.directoryRepository.findDirectorByName(name);
     if (exists) {
+      console.log("Director already exists");
       throw new AppError("Director already exists", 409);
     }
     return await this.directoryRepository.createDirector(name);
+  }
+
+  async findDirectorById(id: string): Promise<Director | null>{
+    const dataDirector = await this.directoryRepository.findDirectorById(id);
+    if(!dataDirector){
+      throw new AppError("Director not found", 404);
+    }
+    return dataDirector;
   }
 }
