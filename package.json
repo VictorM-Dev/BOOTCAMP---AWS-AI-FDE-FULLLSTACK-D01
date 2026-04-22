@@ -20,7 +20,9 @@
   },
   "scripts": {
     "dev": "npx tsx src/index.ts",
-    "directorTest": "npx vitest run test/unit/directorService.test.ts"
+    "directorTest": "npx vitest run test/unit/directorService.test.ts",
+    "movieTest": "npx vitest run test/unit/movieService.test.ts"
+
   },
   "keywords": [],
   "author": "João Victor",
