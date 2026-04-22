@@ -26,5 +26,11 @@ export default class MovieService {
     return await this.movieRepository.createMovie(movie);
   }
 
-
+  async findAllMovies(filters: {
+    title?: string,
+    genre?: string,
+    releaseYear?: number
+  }):Promise<Movie[]> {
+    return this.movieRepository.findAllMovies(filters);
+  }
 }
