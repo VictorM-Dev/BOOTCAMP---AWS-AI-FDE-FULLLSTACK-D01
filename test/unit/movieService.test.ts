@@ -1,12 +1,13 @@
 import { expect, test, vi } from "vitest";
 import MovieService from "../../src/service/movieService";
-import { CreateMovieDTO } from "../../src/repository/DTO/createMovieDTO";
+import { CreateMovieDTO } from "../../src/model/DTO/createMovieDTO";
 import { Movie } from "../../src/model/interface/movie";
 import { Director } from "../../src/model/interface/director";
 
 const mockMovieRepository = {
   createMovie: vi.fn(),
   findAllMovies: vi.fn(),
+  updateMovie: vi.fn(),
 };
 
 const mockDirectorRepository = {
@@ -49,23 +50,89 @@ test("create movie with name exists reject", async () => {
   );
 });
 
-test("create movie with name exists pass (releaseYear)", async ()=>{
+test("create movie with name exists pass (releaseYear)", async () => {
   mockDirectorRepository.findDirectorById.mockResolvedValue(dataDirector);
   mockMovieRepository.findAllMovies.mockResolvedValue([dataMovieMock]);
-  const newMovieResult = new Movie("1","Filme", "Descirção", 2000, "Gênero", "1")
+  const newMovieResult = new Movie(
+    "1",
+    "Filme",
+    "Descirção",
+    2000,
+    "Gênero",
+    "1",
+  );
   mockMovieRepository.createMovie.mockResolvedValue(newMovieResult);
-  const newMovie = new CreateMovieDTO("Filme", "Descirção", 2000, "Gênero", "1");
+  const newMovie = new CreateMovieDTO(
+    "Filme",
+    "Descirção",
+    2000,
+    "Gênero",
+    "1",
+  );
   const result = await service.createMovie(newMovie);
   expect(result).toEqual(newMovieResult);
-})
+});
 
-test("create movie with name exists pass (directorId)", async ()=>{
+test("create movie with name exists pass (directorId)", async () => {
   mockDirectorRepository.findDirectorById.mockResolvedValue(dataDirector);
   mockMovieRepository.findAllMovies.mockResolvedValue([dataMovieMock]);
-  const newMovieResult = new Movie("1","Filme", "Descirção", 1999, "Gênero", "2")
+  const newMovieResult = new Movie(
+    "1",
+    "Filme",
+    "Descirção",
+    1999,
+    "Gênero",
+    "2",
+  );
   mockMovieRepository.createMovie.mockResolvedValue(newMovieResult);
-  const newMovie = new CreateMovieDTO("Filme", "Descirção", 1999, "Gênero", "2");
+  const newMovie = new CreateMovieDTO(
+    "Filme",
+    "Descirção",
+    1999,
+    "Gênero",
+    "2",
+  );
   const result = await service.createMovie(newMovie);
   expect(result).toEqual(newMovieResult);
-})
+});
 
+test("find all movies is empty", async () => {
+  mockMovieRepository.findAllMovies.mockResolvedValue([]);
+  const result = await service.findAllMovies({});
+  expect(result).toEqual([]);
+});
+
+test("find all movies with filter", async () => {
+  mockMovieRepository.findAllMovies.mockResolvedValue([dataMovieMock]);
+  const result = await service.findAllMovies({ title: "Filme" });
+  expect(result).toEqual([dataMovieMock]);
+});
+
+test("find all movies", async () => {
+  mockMovieRepository.findAllMovies.mockResolvedValue([dataMovieMock]);
+  const result = await service.findAllMovies({});
+  expect(result).toEqual([dataMovieMock]);
+});
+
+test("update movie with director not found", async () => {
+  mockDirectorRepository.findDirectorById.mockResolvedValue(null);
+  await expect(service.updateMovie(dataMovieMock)).rejects.toThrow(
+    "Director not found",
+  );
+});
+
+test("update movie with title already", async () => {
+  mockDirectorRepository.findDirectorById.mockResolvedValue(dataDirector);
+  mockMovieRepository.findAllMovies.mockResolvedValue([dataMovieMock]);
+  const newMovie = new Movie("1", "Filme", "Descrição", 1999, "Gênero", "1");
+  await expect(service.updateMovie(newMovie)).rejects.toThrow("Movie already exists");
+});
+
+test("update movie sucessfully", async ()=>{
+  mockDirectorRepository.findDirectorById.mockResolvedValue(dataDirector);
+  mockMovieRepository.findAllMovies.mockResolvedValue([]);
+  const newMovie = new Movie("1", "OutroFilme", "Descrição", 1999, "Gênero", "1");
+  mockMovieRepository.updateMovie.mockResolvedValue(newMovie);
+  const result = await service.updateMovie(newMovie);
+  expect(result).toEqual(newMovie);
+})

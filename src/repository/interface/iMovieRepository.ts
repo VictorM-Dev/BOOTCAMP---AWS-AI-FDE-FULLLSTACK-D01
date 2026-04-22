@@ -1,5 +1,5 @@
+import type { CreateMovieDTO } from "../../model/DTO/createMovieDTO.js";
 import type { Movie } from "../../model/interface/movie.js";
-import type { CreateMovieDTO } from "../DTO/createMovieDTO.js";
 
 export interface IMovieRepository {
   createMovie(movie: CreateMovieDTO): Promise<Movie>;
@@ -8,4 +8,5 @@ export interface IMovieRepository {
     genre?: string;
     releaseYear?: number;
   }): Promise<Movie[]>;
+  updateMovie(movie: Movie): Promise<Movie>;
 }

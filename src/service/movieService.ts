@@ -1,6 +1,6 @@
 import { AppError } from "../middlewares/appError.js";
 import { Movie } from "../model/interface/movie.js";
-import type { CreateMovieDTO } from "../repository/DTO/createMovieDTO.js";
+import type { CreateMovieDTO } from "../model/DTO/createMovieDTO.js";
 import type { IDirectorRepository } from "../repository/interface/iDirectorRepository.js";
 import type { IMovieRepository } from "../repository/interface/iMovieRepository.js";
 
@@ -33,4 +33,21 @@ export default class MovieService {
   }):Promise<Movie[]> {
     return this.movieRepository.findAllMovies(filters);
   }
+
+  async updateMovie(movie: Movie): Promise<Movie>{
+    const directorData = await this.directorRepository.findDirectorById(movie.getDirectorId());
+    if(!directorData){
+      throw new AppError("Director not found", 404);
+    }
+    const dataMovies = await this.movieRepository.findAllMovies({title: movie.getTitle()});
+    if(dataMovies.length > 0){
+      dataMovies.some((m)=>{
+        if(m.getDirectorId() === movie.getDirectorId() && m.getReleaseYear() === movie.getReleaseYear()){
+          throw new AppError("Movie already exists", 409);
+        }
+      })
+    }
+    return this.movieRepository.updateMovie(movie);
+  }
+
 }
