@@ -3,7 +3,6 @@ import type { Movie as PrismaMovie } from "../generated/prisma/client.js";
 import prisma from "../database/prisma.js";
 import type { IMovieRepository } from "./interface/iMovieRepository.js";
 import type { CreateMovieDTO } from "./DTO/createMovieDTO.js";
-import { title } from "node:process";
 
 export default class MovieRepository implements IMovieRepository {
   // Helper function to transform Prisma model into domain entity
@@ -32,9 +31,9 @@ export default class MovieRepository implements IMovieRepository {
   }
 
   async findAllMovies(filters: {
-    title: string | undefined;
-    genre: string | undefined;
-    releaseYear: number | undefined;
+    title?: string;
+    genre?: string;
+    releaseYear?: number;
   }): Promise<Movie[]> {
     const dataMovies = await prisma.$queryRaw<PrismaMovie[]>`
       SELECT * FROM Movie
@@ -44,5 +43,35 @@ export default class MovieRepository implements IMovieRepository {
         AND ${filters.releaseYear} IS NULL OR releaseYear = ${filters.releaseYear}
       )`;
     return dataMovies.map((movie) => this.prismaToClass(movie));
+  }
+
+  async findMovieById(id: string): Promise<Movie | null> {
+    const dataMovie = await prisma.movie.findUnique({
+      where: { id: id },
+    });
+    if (dataMovie) {
+      return this.prismaToClass(dataMovie);
+    }
+    return null;
+  }
+
+  async updateMovie(movie: Movie): Promise<Movie> {
+    const dataMovie = await prisma.movie.update({
+      where: { id: movie.getId() },
+      data: {
+        title: movie.getTitle(),
+        description: movie.getDescription(),
+        releaseYear: movie.getReleaseYear(),
+        genre: movie.getGenre(),
+        directorId: movie.getDirectorId(),
+      },
+    });
+    return this.prismaToClass(dataMovie);
+  }
+
+  async deleteMovie(id: string): Promise<void> {
+    const dataMovie = await prisma.director.delete({
+      where: { id: id },
+    });
   }
 }
