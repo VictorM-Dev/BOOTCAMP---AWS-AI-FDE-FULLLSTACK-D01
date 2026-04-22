@@ -27,8 +27,8 @@ const dataDirector = new Director("1", "João");
 
 test("create movie sucessfully", async () => {
   mockDirectorRepository.findDirectorById.mockResolvedValue(dataDirector);
-  mockMovieRepository.createMovie.mockResolvedValue(dataMovieMock);
   mockMovieRepository.findAllMovies.mockResolvedValue([]);
+  mockMovieRepository.createMovie.mockResolvedValue(dataMovieMock);
   const result = await service.createMovie(dataMovie);
   expect(result).toEqual(dataMovieMock);
 });
@@ -40,11 +40,32 @@ test("create movie director not found", async () => {
   );
 });
 
-test("create movie with name exists", async () => {
+test("create movie with name exists reject", async () => {
   mockDirectorRepository.findDirectorById.mockResolvedValue(dataDirector);
-  mockMovieRepository.createMovie.mockResolvedValue(dataMovieMock);
   mockMovieRepository.findAllMovies.mockResolvedValue([dataMovieMock]);
+  mockMovieRepository.createMovie.mockResolvedValue(dataMovieMock);
   await expect(service.createMovie(dataMovie)).rejects.toThrow(
     "Movie already exists",
   );
 });
+
+test("create movie with name exists pass (releaseYear)", async ()=>{
+  mockDirectorRepository.findDirectorById.mockResolvedValue(dataDirector);
+  mockMovieRepository.findAllMovies.mockResolvedValue([dataMovieMock]);
+  const newMovieResult = new Movie("1","Filme", "Descirção", 2000, "Gênero", "1")
+  mockMovieRepository.createMovie.mockResolvedValue(newMovieResult);
+  const newMovie = new CreateMovieDTO("Filme", "Descirção", 2000, "Gênero", "1");
+  const result = await service.createMovie(newMovie);
+  expect(result).toEqual(newMovieResult);
+})
+
+test("create movie with name exists pass (directorId)", async ()=>{
+  mockDirectorRepository.findDirectorById.mockResolvedValue(dataDirector);
+  mockMovieRepository.findAllMovies.mockResolvedValue([dataMovieMock]);
+  const newMovieResult = new Movie("1","Filme", "Descirção", 1999, "Gênero", "2")
+  mockMovieRepository.createMovie.mockResolvedValue(newMovieResult);
+  const newMovie = new CreateMovieDTO("Filme", "Descirção", 1999, "Gênero", "2");
+  const result = await service.createMovie(newMovie);
+  expect(result).toEqual(newMovieResult);
+})
+
