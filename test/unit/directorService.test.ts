@@ -5,6 +5,7 @@ const mockRepository = {
   createDirector: vi.fn(),
   findDirectorByName: vi.fn(),
   findDirectorById: vi.fn(),
+  findAllDirector: vi.fn(),
 };
 
 const service = new DirectoryService(mockRepository);
@@ -49,4 +50,22 @@ test("not found director", async () => {
   await expect(service.findDirectorById("2")).rejects.toThrow(
     "Director not found",
   );
+});
+
+test("empty all director", async () => {
+  mockRepository.findAllDirector.mockResolvedValue([]);
+  const result = await service.findAllDirector();
+  expect(result).toEqual([]);
+});
+
+test("all director sucessfully", async () => {
+  mockRepository.findAllDirector.mockResolvedValue([
+    { id: "1", name: "João" },
+    { id: "2", name: "Victor" },
+  ]);
+  const result = await service.findAllDirector();
+  expect(result).toEqual([
+    { id: "1", name: "João" },
+    { id: "2", name: "Victor" },
+  ]);
 });

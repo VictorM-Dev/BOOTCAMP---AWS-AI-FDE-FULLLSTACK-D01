@@ -16,8 +16,13 @@ export default class DirectoryService {
   async findDirectorById(id: string): Promise<Director | null>{
     const dataDirector = await this.directoryRepository.findDirectorById(id);
     if(!dataDirector){
+      console.log("Director not found");
       throw new AppError("Director not found", 404);
     }
     return dataDirector;
+  }
+
+  async findAllDirector(): Promise<Director[]>{
+    return this.directoryRepository.findAllDirector();
   }
 }
