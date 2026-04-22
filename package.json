@@ -15,10 +15,12 @@
     "@types/node": "^25.6.0",
     "prisma": "^7.7.0",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.5"
   },
   "scripts": {
-    "dev": "npx tsx src/index.ts"
+    "dev": "npx tsx src/index.ts",
+    "directorTest": "npx vitest run test/unit/directorService.test.ts"
   },
   "keywords": [],
   "author": "João Victor",

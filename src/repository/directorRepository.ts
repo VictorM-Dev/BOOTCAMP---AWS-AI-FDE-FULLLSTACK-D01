@@ -1,7 +1,8 @@
 import { Director } from "../model/interface/director.js";
 import prisma from "../database/prisma.js";
+import type { IDirectorRepository } from "./interface/iDirectorRepository.js";
 
-export default class DirectorRepository {
+export default class DirectorRepository implements IDirectorRepository {
   async createDirector(name: string): Promise<Director> {
     const dataDirector = await prisma.director.create({
       data: { name: name },
