@@ -11,43 +11,64 @@ export default class MovieService {
   ) {}
 
   async createMovie(movie: CreateMovieDTO): Promise<Movie> {
-    const directorData = await this.directorRepository.findDirectorById(movie.directorId);
-    if(!directorData){
+    const dataDirector = await this.directorRepository.findDirectorById(
+      movie.directorId,
+    );
+    if (!dataDirector) {
       throw new AppError("Director not found", 404);
     }
-    const dataMovies = await this.movieRepository.findAllMovies({title: movie.title});
-    if(dataMovies.length > 0){
-      dataMovies.some((m)=>{
-        if(m.getDirectorId() === movie.directorId && m.getReleaseYear() === movie.releaseYear){
+    const dataMovies = await this.movieRepository.findAllMovies({
+      title: movie.title,
+    });
+    if (dataMovies.length > 0) {
+      dataMovies.some((m) => {
+        if (
+          m.getDirectorId() === movie.directorId &&
+          m.getReleaseYear() === movie.releaseYear
+        ) {
           throw new AppError("Movie already exists", 409);
         }
-      })
+      });
     }
     return await this.movieRepository.createMovie(movie);
   }
 
   async findAllMovies(filters: {
-    title?: string,
-    genre?: string,
-    releaseYear?: number
-  }):Promise<Movie[]> {
+    title?: string;
+    genre?: string;
+    releaseYear?: number;
+  }): Promise<Movie[]> {
     return this.movieRepository.findAllMovies(filters);
   }
 
-  async updateMovie(movie: Movie): Promise<Movie>{
-    const directorData = await this.directorRepository.findDirectorById(movie.getDirectorId());
-    if(!directorData){
+  async updateMovie(movie: Movie): Promise<Movie> {
+    const dataDirector = await this.directorRepository.findDirectorById(
+      movie.getDirectorId(),
+    );
+    if (!dataDirector) {
       throw new AppError("Director not found", 404);
     }
-    const dataMovies = await this.movieRepository.findAllMovies({title: movie.getTitle()});
-    if(dataMovies.length > 0){
-      dataMovies.some((m)=>{
-        if(m.getDirectorId() === movie.getDirectorId() && m.getReleaseYear() === movie.getReleaseYear()){
+    const dataMovies = await this.movieRepository.findAllMovies({
+      title: movie.getTitle(),
+    });
+    if (dataMovies.length > 0) {
+      dataMovies.some((m) => {
+        if (
+          m.getDirectorId() === movie.getDirectorId() &&
+          m.getReleaseYear() === movie.getReleaseYear()
+        ) {
           throw new AppError("Movie already exists", 409);
         }
-      })
+      });
     }
     return this.movieRepository.updateMovie(movie);
   }
 
+  async deleteMovie(id: string): Promise<void> {
+    const dataMovie = await this.movieRepository.findMovieById(id);
+    if (!dataMovie) {
+      throw new AppError("Movie not found", 404);
+    }
+    return this.movieRepository.deleteMovie(id);
+  }
 }

@@ -6,8 +6,10 @@ import { Director } from "../../src/model/interface/director";
 
 const mockMovieRepository = {
   createMovie: vi.fn(),
+  findMovieById: vi.fn(),
   findAllMovies: vi.fn(),
   updateMovie: vi.fn(),
+  deleteMovie: vi.fn(),
 };
 
 const mockDirectorRepository = {
@@ -125,14 +127,35 @@ test("update movie with title already", async () => {
   mockDirectorRepository.findDirectorById.mockResolvedValue(dataDirector);
   mockMovieRepository.findAllMovies.mockResolvedValue([dataMovieMock]);
   const newMovie = new Movie("1", "Filme", "Descrição", 1999, "Gênero", "1");
-  await expect(service.updateMovie(newMovie)).rejects.toThrow("Movie already exists");
+  await expect(service.updateMovie(newMovie)).rejects.toThrow(
+    "Movie already exists",
+  );
 });
 
-test("update movie sucessfully", async ()=>{
+test("update movie sucessfully", async () => {
   mockDirectorRepository.findDirectorById.mockResolvedValue(dataDirector);
   mockMovieRepository.findAllMovies.mockResolvedValue([]);
-  const newMovie = new Movie("1", "OutroFilme", "Descrição", 1999, "Gênero", "1");
+  const newMovie = new Movie(
+    "1",
+    "OutroFilme",
+    "Descrição",
+    1999,
+    "Gênero",
+    "1",
+  );
   mockMovieRepository.updateMovie.mockResolvedValue(newMovie);
   const result = await service.updateMovie(newMovie);
   expect(result).toEqual(newMovie);
-})
+});
+
+test("delete: movie not found", async () => {
+  mockMovieRepository.findMovieById.mockResolvedValue(null);
+  await expect(service.deleteMovie("1")).rejects.toThrow("Movie not found");
+});
+
+test("delete movie sucessfully", async () => {
+  mockMovieRepository.findMovieById.mockResolvedValue(mockMovieRepository);
+  mockMovieRepository.deleteMovie.mockResolvedValue(undefined);
+  await service.deleteMovie("1");
+  expect(mockMovieRepository.deleteMovie).toHaveBeenCalledWith("1");
+});
