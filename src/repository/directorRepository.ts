@@ -20,7 +20,7 @@ export default class DirectorRepository implements IDirectorRepository {
     return null;
   }
 
-  async findAllDirectors(): Promise<Director[]> {
+  async findAllDirector(): Promise<Director[]> {
     const dataDirectors = await prisma.director.findMany();
     return dataDirectors.map(
       (director) => new Director(director.id, director.name),

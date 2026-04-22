@@ -25,4 +25,22 @@ export default class DirectoryService {
   async findAllDirector(): Promise<Director[]>{
     return this.directoryRepository.findAllDirector();
   }
+
+  async updateDirector(director: Director): Promise<Director>{
+    const dataDirector = await this.directoryRepository.findDirectorById(director.getId());
+    if(!dataDirector){
+      console.log("Director not found");
+      throw new AppError("Director not found", 404);
+    }
+    if(dataDirector.getName() === director.getName()){
+      console.log("The name cannot be the same as the previous one");
+      throw new AppError("The name cannot be the same as the previous one", 400);
+    }
+    const dataDirectorName = await this.directoryRepository.findDirectorByName(director.getName());
+    if(dataDirectorName) {
+      console.log("Director already exists");
+      throw new AppError("Director already exists", 409);
+    }
+    return this.directoryRepository.updateDirector(director);
+  }
 }

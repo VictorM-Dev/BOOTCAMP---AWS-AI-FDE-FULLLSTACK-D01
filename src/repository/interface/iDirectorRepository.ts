@@ -5,4 +5,5 @@ export interface IDirectorRepository {
   findDirectorByName(name: string): Promise<Director | null>;
   findDirectorById(id: string): Promise<Director | null>;
   findAllDirector(): Promise<Director[]>;
+  updateDirector(director: Director): Promise<Director>;
 }

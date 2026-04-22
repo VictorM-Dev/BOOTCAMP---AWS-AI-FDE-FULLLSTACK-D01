@@ -1,11 +1,13 @@
 import { expect, test, vi } from "vitest";
 import DirectoryService from "../../src/service/directorService.js";
+import { Director } from "../../src/model/interface/director.js";
 
 const mockRepository = {
   createDirector: vi.fn(),
   findDirectorByName: vi.fn(),
   findDirectorById: vi.fn(),
   findAllDirector: vi.fn(),
+  updateDirector: vi.fn(),
 };
 
 const service = new DirectoryService(mockRepository);
@@ -45,7 +47,7 @@ test("find director sucessfully", async () => {
   });
 });
 
-test("not found director", async () => {
+test("director not found", async () => {
   mockRepository.findDirectorById.mockResolvedValue(null);
   await expect(service.findDirectorById("2")).rejects.toThrow(
     "Director not found",
@@ -68,4 +70,41 @@ test("all director sucessfully", async () => {
     { id: "1", name: "João" },
     { id: "2", name: "Victor" },
   ]);
+});
+
+test("update: director not found", async () => {
+  mockRepository.findDirectorById.mockResolvedValue(null);
+  const dataDirector = new Director("1", "João");
+  await expect(service.updateDirector(dataDirector)).rejects.toThrow(
+    "Director not found",
+  );
+});
+
+test("update: director name to equal as the previous one", async () => {
+  const dataDirector = new Director("1", "João");
+  mockRepository.findDirectorById.mockResolvedValue(dataDirector);
+  await expect(service.updateDirector(dataDirector)).rejects.toThrow(
+    "The name cannot be the same as the previous one",
+  );
+});
+
+test("update: director name already exists", async () => {
+  const dataDirector1 = new Director("1", "João");
+  const dataDirector2 = new Director("2", "Victor");
+  mockRepository.findDirectorById.mockResolvedValue(dataDirector1);
+  mockRepository.findDirectorByName.mockResolvedValue(dataDirector2);
+  const dataDirectorUpdate = new Director("1", "Victor");
+  await expect(service.updateDirector(dataDirectorUpdate)).rejects.toThrow(
+    "Director already exists",
+  );
+});
+
+test("update: director sucessfully", async () => {
+  const dataDirector1 = new Director("1", "João");
+  mockRepository.findDirectorById.mockResolvedValue(dataDirector1);
+  mockRepository.findDirectorByName.mockResolvedValue(null);
+  const dataDirectorUpdate = new Director("1", "João Victor");
+  mockRepository.updateDirector.mockResolvedValue(dataDirectorUpdate);
+  const result = await service.updateDirector(dataDirectorUpdate);
+  expect(result).toEqual(dataDirectorUpdate);
 });
