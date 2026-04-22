@@ -6,7 +6,6 @@ export default class DirectorRepository {
     const dataDirector = await prisma.director.create({
       data: { name: name },
     });
-    console.log("Repository: Director create successfully");
     return new Director(dataDirector.id, dataDirector.name);
   }
 
@@ -15,16 +14,13 @@ export default class DirectorRepository {
       where: { id: id },
     });
     if (dataDirector) {
-      console.log("Repository: Director found successfully");
       return new Director(dataDirector.id, dataDirector.name);
     }
-    console.log("Repository: Director not found");
     return null;
   }
 
   async findAllDirectors(): Promise<Director[]> {
     const dataDirectors = await prisma.director.findMany();
-    console.log(`Repository: Directors fetched successfully. Total: ${dataDirectors.length}`)
     return dataDirectors.map(
       (director) => new Director(director.id, director.name),
     );
@@ -35,7 +31,6 @@ export default class DirectorRepository {
       where: { id: director.getId() },
       data: { name: director.getName() },
     });
-    console.log("Repository: Director update succesfully");
     return new Director(dataDirector.id, dataDirector.name);
   }
 
@@ -43,19 +38,16 @@ export default class DirectorRepository {
     const dataDirector = await prisma.director.delete({
       where: { id: id },
     });
-    console.log("Repository: Director delete sucessfully");
   }
 
   //Using for validation in service
-  async findDirectorByName(name : string){
+  async findDirectorByName(name: string): Promise<Director | null> {
     const dataDirector = await prisma.director.findUnique({
-      where: {name: name}
+      where: { name: name },
     });
     if (dataDirector) {
-      console.log("Repository: Director found successfully");
       return new Director(dataDirector.id, dataDirector.name);
     }
-    console.log("Repository: Director not found");
     return null;
   }
 }
