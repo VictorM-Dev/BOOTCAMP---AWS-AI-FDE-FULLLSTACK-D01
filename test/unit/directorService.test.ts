@@ -119,6 +119,19 @@ test("delete: director not found", async () => {
   );
 });
 
+test("delete director with movies", async () => {
+  mockRepository.findDirectorById.mockResolvedValue({
+    id: "1",
+    name: "João",
+  });
+  //The return in service is void
+  mockRepository.deleteDirector.mockResolvedValue(undefined);
+  mockRepository.findMoviesByDirectorId.mockResolvedValue([1]);
+  await expect(service.deleteDirector("1")).rejects.toThrow(
+    "Do not remove director with movies",
+  );
+});
+
 test("delete sucessfully", async () => {
   mockRepository.findDirectorById.mockResolvedValue({
     id: "1",
@@ -126,6 +139,7 @@ test("delete sucessfully", async () => {
   });
   //The return in service is void
   mockRepository.deleteDirector.mockResolvedValue(undefined);
+  mockRepository.findMoviesByDirectorId.mockResolvedValue([]);
   await service.deleteDirector("1");
   expect(mockRepository.deleteDirector).toHaveBeenCalledWith("1");
 });

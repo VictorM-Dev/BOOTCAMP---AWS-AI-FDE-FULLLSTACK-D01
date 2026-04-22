@@ -8,7 +8,6 @@ export default class DirectoryService {
   async createDirector(name: string): Promise<Director> {
     const exists = await this.directoryRepository.findDirectorByName(name);
     if (exists) {
-      console.log("Director already exists");
       throw new AppError("Director already exists", 409);
     }
     return await this.directoryRepository.createDirector(name);
@@ -17,7 +16,6 @@ export default class DirectoryService {
   async findDirectorById(id: string): Promise<Director | null> {
     const dataDirector = await this.directoryRepository.findDirectorById(id);
     if (!dataDirector) {
-      console.log("Director not found");
       throw new AppError("Director not found", 404);
     }
     return dataDirector;
@@ -32,11 +30,9 @@ export default class DirectoryService {
       director.getId(),
     );
     if (!dataDirector) {
-      console.log("Director not found");
       throw new AppError("Director not found", 404);
     }
     if (dataDirector.getName() === director.getName()) {
-      console.log("The name cannot be the same as the previous one");
       throw new AppError(
         "The name cannot be the same as the previous one",
         400,
@@ -46,7 +42,6 @@ export default class DirectoryService {
       director.getName(),
     );
     if (dataDirectorName) {
-      console.log("Director already exists");
       throw new AppError("Director already exists", 409);
     }
     return this.directoryRepository.updateDirector(director);
@@ -55,16 +50,18 @@ export default class DirectoryService {
   async deleteDirector(id: string): Promise<void> {
     const dataDirector = await this.directoryRepository.findDirectorById(id);
     if (!dataDirector) {
-      console.log("Director not found");
       throw new AppError("Director not found", 404);
     }
-    this.directoryRepository.deleteDirector(id);
+    const dataDirectorMovies = await this.directoryRepository.findMoviesByDirectorId(id);
+    if(dataDirectorMovies.length !== 0){
+      throw new AppError("Do not remove director with movies", 409);
+    }
+    await this.directoryRepository.deleteDirector(id);
   }
 
   async findMoviesByDirectorId(id: string): Promise<Movie[]> {
     const dataDirector = await this.directoryRepository.findDirectorById(id);
     if (!dataDirector) {
-      console.log("Director not found");
       throw new AppError("Director not found", 404);
     }
     const dataDirectorMovies = await this.directoryRepository.findMoviesByDirectorId(id);
