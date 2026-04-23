@@ -26,20 +26,20 @@ REST API para gerenciamento de filmes e diretores, desenvolvida com Node.js, Typ
 
 ```
 ├── src/
-│   ├── controller/       # Camada de controle HTTP
-│   ├── service/          # Regras de negócio
-│   ├── repository/       # Acesso ao banco de dados via Prisma
-│   ├── model/            # Interfaces e DTOs
-│   ├── middlewares/      # Validações e tratamento de erros
-│   ├── routes/           # Definição das rotas
+│   ├── controller/          # Camada de controle HTTP
+│   ├── service/             # Regras de negócio
+│   ├── repository/          # Acesso ao banco de dados via Prisma
+│   ├── model/               # Interfaces e DTOs
+│   ├── middlewares/         # Validações e tratamento de erros
+│   ├── routes/              # Definição das rotas
 │   └── database/
-│       ├── schema/       # Schema Prisma
-│       └── migrations/   # Histórico de migrations
+│       ├── schema/          # Schema Prisma
+│       └── migrations/      # Histórico de migrations
 ├── test/
-│   └── unit/             # Testes unitários dos services
-├── .devcontainer/        # Configuração do DevContainer
-├── docker-compose.yml    # Ambiente de desenvolvimento
-└── prisma.config.ts
+│   └── unit/                # Testes unitários dos services
+├── .devcontainer/           # Configuração do DevContainer
+├── docker-compose.yml       # Ambiente de desenvolvimento
+└── docker-compose.prod.yml  # Ambiente de produção
 ```
 
 ## Modelos de dados
