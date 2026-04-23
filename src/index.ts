@@ -4,8 +4,8 @@ import { errorMiddleware } from "./middlewares/errorMiddleware.js";
 const app = express();
 
 app.use(express.json());
-app.use(errorMiddleware);
 app.use(directorRouter);
+app.use(errorMiddleware);
 
 app.listen(3000, ()=>{
   console.log("Server inited: http://localhost:3000");

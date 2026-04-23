@@ -19,6 +19,7 @@
     "vitest": "^4.1.5"
   },
   "scripts": {
+    "wdev": "npx tsx watch src/index.ts",
     "dev": "npx tsx src/index.ts",
     "directorTest": "npx vitest run test/unit/directorService.test.ts",
     "movieTest": "npx vitest run test/unit/movieService.test.ts"
