@@ -125,15 +125,27 @@ test("update movie with director not found", async () => {
 
 test("update movie with title already", async () => {
   mockDirectorRepository.findDirectorById.mockResolvedValue(dataDirector);
+  mockMovieRepository.findMovieById.mockResolvedValue(dataMovieMock)
   mockMovieRepository.findAllMovies.mockResolvedValue([dataMovieMock]);
-  const newMovie = new Movie("1", "Filme", "Descrição", 1999, "Gênero", "1");
+  const newMovie = new Movie("1", "OutroFilme", "Descrição", 1999, "Gênero", "1");
   await expect(service.updateMovie(newMovie)).rejects.toThrow(
     "Movie already exists",
   );
 });
 
+test("update movie equal to previous one", async () => {
+  mockDirectorRepository.findDirectorById.mockResolvedValue(dataDirector);
+  mockMovieRepository.findMovieById.mockResolvedValue(dataMovieMock)
+  mockMovieRepository.findAllMovies.mockResolvedValue([dataMovieMock]);
+  const newMovie = new Movie("1", "Filme", "Descrição", 1999, "Gênero", "1");
+  await expect(service.updateMovie(newMovie)).rejects.toThrow(
+    "Movie equal to previous one",
+  );
+});
+
 test("update movie sucessfully", async () => {
   mockDirectorRepository.findDirectorById.mockResolvedValue(dataDirector);
+  mockMovieRepository.findMovieById.mockResolvedValue(dataMovieMock)
   mockMovieRepository.findAllMovies.mockResolvedValue([]);
   const newMovie = new Movie(
     "1",

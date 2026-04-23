@@ -67,8 +67,10 @@ export default class MovieService {
       throw new AppError("Director not found", 404);
     }
     const dataMovie = await this.movieRepository.findMovieById(movie.getId());
+    if(!dataMovie){
+      throw new AppError("Movie not found", 404);
+    }
     if (
-      dataMovie &&
       dataMovie.getTitle() === movie.getTitle() &&
       dataMovie.getDescription() === movie.getDescription() &&
       dataMovie.getReleaseYear() === movie.getReleaseYear() &&
