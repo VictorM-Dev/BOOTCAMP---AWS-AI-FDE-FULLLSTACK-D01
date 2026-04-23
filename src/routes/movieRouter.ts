@@ -16,7 +16,7 @@ const movieController = new MovieController(movieService);
 router.post("/movies", validationCreateMovie, (req, res) => {
   console.log(req.body);
   return movieController.createMovie(req, res);
-})
+});
 
 router.get("/movies", (req, res) => {
   console.log(req.query);
@@ -26,5 +26,12 @@ router.get("/movies", (req, res) => {
 router.get("/movies/:id", (req, res) => {
   console.log(req.params);
   return movieController.findMovieById(req, res);
-})
+});
+
+router.put("/movie/:id", validationCreateMovie, (req, res) => {
+  console.log(req.params);
+  console.log(req.body);
+  return movieController.updateMovie(req, res);
+});
+
 export default router;

@@ -66,6 +66,17 @@ export default class MovieService {
     if (!dataDirector) {
       throw new AppError("Director not found", 404);
     }
+    const dataMovie = await this.movieRepository.findMovieById(movie.getId());
+    if (
+      dataMovie &&
+      dataMovie.getTitle() === movie.getTitle() &&
+      dataMovie.getDescription() === movie.getDescription() &&
+      dataMovie.getReleaseYear() === movie.getReleaseYear() &&
+      dataMovie.getGenre() === movie.getGenre() &&
+      dataMovie.getDirectorId() === movie.getDirectorId()
+    ) {
+      throw new AppError("Movie equal to previous one", 409);
+    }
     const dataMovies = await this.movieRepository.findAllMovies({
       title: movie.getTitle(),
     });
@@ -90,9 +101,9 @@ export default class MovieService {
     return this.movieRepository.deleteMovie(id);
   }
 
-  async findMovieById(id: string): Promise<Movie>{
+  async findMovieById(id: string): Promise<Movie> {
     const dataMovie = await this.movieRepository.findMovieById(id);
-    if(!dataMovie){
+    if (!dataMovie) {
       throw new AppError("Movie not found", 404);
     }
     return dataMovie;
