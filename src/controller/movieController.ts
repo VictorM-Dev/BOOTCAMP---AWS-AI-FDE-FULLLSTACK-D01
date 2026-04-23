@@ -40,7 +40,7 @@ export default class MovieController {
 
   async updateMovie(req: Request, res: Response): Promise<Response> {
     const { title, description, releaseYear, genre, directorId } = req.body;
-    const { id } = req.params as {id:string}; 
+    const { id } = req.params as { id: string };
     const movie = new Movie(
       id,
       title,
@@ -51,5 +51,11 @@ export default class MovieController {
     );
     const dataMovie = await this.movieService.updateMovie(movie);
     return res.status(200).json(dataMovie);
+  }
+
+  async deleteMovie(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params as { id: string };
+    await this.movieService.deleteMovie(id);
+    return res.status(204).send();
   }
 }

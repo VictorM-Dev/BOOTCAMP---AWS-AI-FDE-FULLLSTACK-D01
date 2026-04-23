@@ -73,7 +73,7 @@ export default class MovieRepository implements IMovieRepository {
   }
 
   async deleteMovie(id: string): Promise<void> {
-    const dataMovie = await prisma.director.delete({
+    const dataMovie = await prisma.movie.delete({
       where: { id: id },
     });
   }

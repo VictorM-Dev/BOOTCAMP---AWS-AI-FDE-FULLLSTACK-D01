@@ -28,10 +28,14 @@ router.get("/movies/:id", (req, res) => {
   return movieController.findMovieById(req, res);
 });
 
-router.put("/movie/:id", validationCreateMovie, (req, res) => {
+router.put("/movies/:id", validationCreateMovie, (req, res) => {
   console.log(req.params);
   console.log(req.body);
   return movieController.updateMovie(req, res);
 });
 
+router.delete("/movies/:id", (req, res) =>{
+  console.log(req.params);
+  return movieController.deleteMovie(req, res);
+})
 export default router;
