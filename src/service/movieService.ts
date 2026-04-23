@@ -89,4 +89,12 @@ export default class MovieService {
     }
     return this.movieRepository.deleteMovie(id);
   }
+
+  async findMovieById(id: string): Promise<Movie>{
+    const dataMovie = await this.movieRepository.findMovieById(id);
+    if(!dataMovie){
+      throw new AppError("Movie not found", 404);
+    }
+    return dataMovie;
+  }
 }

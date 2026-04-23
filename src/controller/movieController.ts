@@ -31,4 +31,10 @@ export default class MovieController {
     });
     return res.status(200).json(dataMovies);
   }
+
+  async findMovieById(req: Request, res: Response): Promise<Response>{
+    const { id } = req.params as {id: string};
+    const dataMovie = await this.movieService.findMovieById(id);
+    return res.status(200).json(dataMovie);
+  }
 }

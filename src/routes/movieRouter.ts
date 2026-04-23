@@ -22,4 +22,9 @@ router.get("/movies", (req, res) => {
   console.log(req.query);
   return movieController.findAllMovies(req, res);
 });
+
+router.get("/movies/:id", (req, res) => {
+  console.log(req.params);
+  return movieController.findMovieById(req, res);
+})
 export default router;
