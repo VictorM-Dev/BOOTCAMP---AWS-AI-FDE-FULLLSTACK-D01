@@ -1,8 +1,10 @@
 import express from "express";
 import directorRouter from "./routes/directorRouter.js"
+import { errorMiddleware } from "./middlewares/errorMiddleware.js";
 const app = express();
 
 app.use(express.json());
+app.use(errorMiddleware);
 app.use(directorRouter);
 
 app.listen(3000, ()=>{
