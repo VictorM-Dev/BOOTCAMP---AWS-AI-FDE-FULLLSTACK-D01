@@ -2,7 +2,7 @@ import { Movie } from "../model/interface/movie.js";
 import type { Movie as PrismaMovie } from "../generated/prisma/client.js";
 import prisma from "../database/prisma.js";
 import type { IMovieRepository } from "./interface/iMovieRepository.js";
-import type { CreateMovieDTO } from "./DTO/createMovieDTO.js";
+import type { CreateMovieDTO } from "../model/DTO/createMovieDTO.js";
 
 export default class MovieRepository implements IMovieRepository {
   // Helper function to transform Prisma model into domain entity
@@ -35,13 +35,16 @@ export default class MovieRepository implements IMovieRepository {
     genre?: string;
     releaseYear?: number;
   }): Promise<Movie[]> {
-    const dataMovies = await prisma.$queryRaw<PrismaMovie[]>`
-      SELECT * FROM Movie
-      WHERE(
-        ${filters.title} IS NULL OR title = ${filters.title}
-        AND ${filters.genre} IS NULL OR genre = ${filters.genre}
-        AND ${filters.releaseYear} IS NULL OR releaseYear = ${filters.releaseYear}
-      )`;
+    const dataMovies = await prisma.movie.findMany({
+      where: {
+        ...(filters.title && { title: filters.title }),
+        ...(filters.genre && { genre: filters.genre }),
+        ...(filters.releaseYear !== undefined && {
+          releaseYear: filters.releaseYear,
+        }),
+      },
+    });
+
     return dataMovies.map((movie) => this.prismaToClass(movie));
   }
 

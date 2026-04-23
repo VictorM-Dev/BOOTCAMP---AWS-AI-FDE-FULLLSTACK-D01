@@ -16,6 +16,7 @@ router.get("/directors/:id", (req, res) => {
   console.log(req.params);
   return directorController.findDirectorById(req, res);
 });
+
 router.get("/directors", (req, res) => {
   return directorController.findAllDirectors(req, res);
 });

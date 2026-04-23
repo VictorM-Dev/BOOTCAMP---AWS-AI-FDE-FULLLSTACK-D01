@@ -11,6 +11,7 @@ export default class MovieService {
   ) {}
 
   async createMovie(movie: CreateMovieDTO): Promise<Movie> {
+    console.log(movie);
     const dataDirector = await this.directorRepository.findDirectorById(
       movie.directorId,
     );
@@ -21,14 +22,15 @@ export default class MovieService {
       title: movie.title,
     });
     if (dataMovies.length > 0) {
-      dataMovies.some((m) => {
-        if (
+      const exists = dataMovies.some(
+        (m) =>
           m.getDirectorId() === movie.directorId &&
-          m.getReleaseYear() === movie.releaseYear
-        ) {
-          throw new AppError("Movie already exists", 409);
-        }
-      });
+          m.getReleaseYear() === movie.releaseYear,
+      );
+
+      if (exists) {
+        throw new AppError("Movie already exists", 409);
+      }
     }
     return await this.movieRepository.createMovie(movie);
   }
