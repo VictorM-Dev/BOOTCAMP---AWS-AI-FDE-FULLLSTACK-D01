@@ -35,11 +35,27 @@ export default class MovieService {
     return await this.movieRepository.createMovie(movie);
   }
 
-  async findAllMovies(filters: {
+  async findAllMovies(params: {
     title?: string;
     genre?: string;
-    releaseYear?: number;
+    releaseYear?: string;
   }): Promise<Movie[]> {
+    const filters: { title?: string; releaseYear?: number; genre?: string } =
+      {};
+
+    if (params.title) {
+      filters.title = params.title;
+    }
+    if (params.releaseYear) {
+      const parsedReleaseYear = Number(params.releaseYear);
+      if (Number.isNaN(parsedReleaseYear)) {
+        throw new AppError("Invalid release year", 400);
+      }
+      filters.releaseYear = Number(params.releaseYear);
+    }
+    if (params.genre) {
+      filters.genre = params.genre;
+    }
     return this.movieRepository.findAllMovies(filters);
   }
 

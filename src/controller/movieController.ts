@@ -1,13 +1,34 @@
 import type { Request, Response } from "express";
 import type MovieService from "../service/movieService.js";
 import { CreateMovieDTO } from "../model/DTO/createMovieDTO.js";
+import { json } from "node:stream/consumers";
 
-export default class MovieController{
-  constructor(private movieService: MovieService){};
-  async createMovie(req: Request, res: Response){
+export default class MovieController {
+  constructor(private movieService: MovieService) {}
+  async createMovie(req: Request, res: Response): Promise<Response> {
     const { title, description, releaseYear, genre, directorId } = req.body;
-    const movie = new CreateMovieDTO(title, description, releaseYear, genre, directorId);
+    const movie = new CreateMovieDTO(
+      title,
+      description,
+      releaseYear,
+      genre,
+      directorId,
+    );
     const dataMovie = await this.movieService.createMovie(movie);
     return res.status(201).json(dataMovie);
-  };
+  }
+
+  async findAllMovies(req: Request, res: Response): Promise<Response> {
+    const { title, releaseYear, genre } = req.query as {
+      title: string;
+      releaseYear: string;
+      genre: string;
+    };
+    const dataMovies = await this.movieService.findAllMovies({
+      title,
+      releaseYear,
+      genre,
+    });
+    return res.status(200).json(dataMovies);
+  }
 }

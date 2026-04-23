@@ -18,4 +18,8 @@ router.post("/movies", validationCreateMovie, (req, res) => {
   return movieController.createMovie(req, res);
 })
 
+router.get("/movies", (req, res) => {
+  console.log(req.query);
+  return movieController.findAllMovies(req, res);
+});
 export default router;
