@@ -1,0 +1,27 @@
+version: "3.8"
+name: prod
+
+services:
+  app_prod:
+    container_name: application_prod
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL_PROD}
+    depends_on:
+      - db_prod
+
+  db_prod:
+    image: postgres:16
+    container_name: dataBase_prod
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pgdata_prod:/var/lib/postgresql/data
+volumes:
+  pgdata_prod:
