@@ -166,8 +166,8 @@ Pré-requisitos: **Docker** e **Git**.
 
 1. Clone o repositório:
    ```bash
-   git clone <url-do-repositorio>
-   cd Desafio
+   git clone <url-do-repositorio> <nome_da_pasta>
+   cd <nome_da_pasta>
    ```
 2. Crie o arquivo `.env` na raiz baseado no `.env.exemple`.
 3. Suba os containers:
