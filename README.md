@@ -1,5 +1,25 @@
 # BOOTCAMP AWS AI FDE FULLLSTACK DESAFIO 01
 
+## Minha experiência com o projeto
+
+Eu realizei esse desafio após finalizar o P1 da universidade, durante as férias antes do P2, então tudo ainda era bem novo para mim — foi meu primeiro contato com todas as tecnologias utilizadas no projeto.
+
+A experiência foi bastante empolgante. Recebi orientações dos instrutores do estágio, Jailson e William, além da minha scrum master Ana Clara, que me ajudaram a melhorar tanto a minha arquitetura quanto a forma de organizar tarefas e planejamento de tempo. Um dos principais pontos foi concentrar todas as regras de negócio dentro dos services, o que facilitou bastante a escrita de testes unitários.
+
+Também separei toda a validação de dados em middlewares, que interceptam a requisição antes de chegar ao controller (conselho do Jailson que ajudou demais na desaclopação do meu projeto 😄), garantindo que apenas dados consistentes cheguem à camada de serviço. Além disso, implementei um handler global para tratar os erros lançados no service.
+
+A criação do ambiente com Docker Compose e a utilização de um Dev Container para desenvolvimento foi algo transformador (acabou aquele clássico “na minha máquina funciona” 😄). Sinceramente, não tenho adjetivos suficientes para descrever o quanto isso expandiu minha visão sobre ambientes de desenvolvimento. Foi tipo ganhar um brinquedo novo quando criança — só que eu não queria parar de brincar com ele. Usei dois Docker Compose nesse projeto, um para desenvolvimento e outro para produção, de tanto que gostei desse negócio 😄.
+
+Sou muito entusiasmado em aprender, estudar e principalmente em lidar com coisas novas. Estou feliz por ter conseguido concluir tudo e satisfeito com o resultado final.
+
+Por fim, gostaria de comentar sobre minha experiência com o Prisma e LLMs. Em alguns momentos, tentei usar LLMs para configurar o Prisma 7.7, o que acabou me fazendo perder um bom tempo. O modelo entrou em um loop de respostas erradas logo no início do projeto, o que gerou bastante frustração (isso inclusive aparece nos primeiros commits, pela quantidade de alterações na estrutura e nas dependências 🥲).
+
+No final, desisti das “soluções mágicas” e fui direto na documentação oficial do Prisma (como um bom programador raiz 😄). Em menos de 20 minutos consegui configurar tudo corretamente. A partir daí, o resto do projeto fluiu muito bem — não tive dificuldade em nada, apenas me diverti codando ao som de Kiss - I Was Made For Lovin' You 😎.
+
+PS: o restante da documentação está totalmente formalizado, sem mais brincadeirinhas.
+
+## Descrição e go to
+
 REST API para gerenciamento de filmes e diretores, desenvolvida com Node.js, TypeScript, Express e Prisma ORM com banco de dados PostgreSQL.
 
 - [Tecnologias](#tecnologias)
