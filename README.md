@@ -6,6 +6,8 @@ REST API para gerenciamento de filmes e diretores, desenvolvida com Node.js, Typ
 - [Estrutura do projeto](#estrutura-do-projeto)
 - [Modelos de dados](#modelos-de-dados)
 - [Endpoints](#endpoints)
+  - [Directors](#directors)
+  - [Movies](#movies)
 - [Executando o projeto](#executando-o-projeto)
   - [Variáveis de ambiente](#variáveis-de-ambiente)
   - [Rodando em produção](#rodando-em-produção)
@@ -90,20 +92,81 @@ REST API para gerenciamento de filmes e diretores, desenvolvida com Node.js, Typ
 | PUT    | `/directors/:id`            | Atualiza um diretor                |
 | DELETE | `/directors/:id`            | Remove um diretor                  |
 
-**Body — POST `/directors`**
-```json
-{
-  "name": "João Victor"
-}
-```
+---
 
-**Body — PUT `/directors`**
+GET /directors
+
+**Resposta**
+```json
+[
+  {
+    "id": "uuid-do-diretor",
+    "name": "João Victor"
+  }
+]
+```
+---
+
+GET /directors/`uuid-do-diretor`
+
+**Resposta**
 ```json
 {
-  "Id": "1234" //Formato UUID passado como string
+  "id": "uuid-do-diretor",
   "name": "João Victor"
 }
 ```
+---
+
+GET /directors/`uuid-do-diretor`/movies
+
+**Resposta**
+```json
+[
+  {
+    "id": "uuid-do-filme",
+    "title": "Filme de João",
+    "description": "",
+    "releaseYear": 1999,
+    "genre": "Programação",
+    "directorId": "uuid-do-diretor"
+  }
+]
+```
+---
+POST `/directors`
+
+**Requisição**
+```json
+{
+  "name": "João Victor"
+}
+```
+**Resposta**
+```json
+{
+  "id": "uuid-do-diretor",
+  "name": "João Victor"
+}
+```
+---
+
+PUT /directors/`uuid-do-diretor`
+
+**Requisição**
+```json
+{
+  "name": "João Victor Atualizado"
+}
+```
+**Resposta**
+```json
+{
+  "id": "uuid-do-diretor",
+  "name": "João Victor Atualizado"
+}
+```
+---
 
 ### Movies
 
@@ -115,14 +178,51 @@ REST API para gerenciamento de filmes e diretores, desenvolvida com Node.js, Typ
 | PUT    | `/movies/:id` | Atualiza um filme                              |
 | DELETE | `/movies/:id` | Remove um filme                                |
 
-**Query params — GET `/movies`**
+---
+
+GET /movies
+
+**Resposta**
+```json
+[
+  {
+    "id": "uuid-do-filme",
+    "title": "Filme de João",
+    "description": "",
+    "releaseYear": 1999,
+    "genre": "Programação",
+    "directorId": "uuid-do-diretor"
+  }
+]
+```
+---
+
+GET /movies/`uuid-do-filme`
+
+**Resposta**
+```json
+{
+  "id": "uuid-do-filme",
+  "title": "Filme de João",
+  "description": "",
+  "releaseYear": 1999,
+  "genre": "Programação",
+  "directorId": "uuid-do-diretor"
+}
+```
+**Query params**
 | Param       | Tipo   | Descrição                  |
 |-------------|--------|----------------------------|
 | title       | string | Filtra por título          |
 | genre       | string | Filtra por gênero          |
 | releaseYear | number | Filtra por ano de lançamento |
 
-**Body — POST `/movies`**
+Exemplo de rota: /movies/`uuid-do-filme`?title=Filme%20de%João
+
+---
+POST /movies
+
+**Requisição**
 ```json
 {
   "title": "Filme de João",
@@ -132,8 +232,31 @@ REST API para gerenciamento de filmes e diretores, desenvolvida com Node.js, Typ
   "directorId": "uuid-do-diretor"
 }
 ```
+**Resposta**
+```json
+{
+  "id": "uuid-do-filme",
+  "title": "Filme de João",
+  "description": "",
+  "releaseYear": 1999,
+  "genre": "Programação",
+  "directorId": "uuid-do-diretor"
+}
+```
+---
+PUT /movies/`uuid-do-filme`
 
-**Body — PUT `/movies/:id`**
+**Requisição**
+```json
+{
+  "title": "Filme de Victor",
+  "description": "",
+  "releaseYear": 1999,
+  "genre": "Programação",
+  "directorId": "uuid-do-diretor"
+}
+```
+**Resposta**
 ```json
 {
   "id": "uuid-do-filme",
@@ -144,6 +267,7 @@ REST API para gerenciamento de filmes e diretores, desenvolvida com Node.js, Typ
   "directorId": "uuid-do-diretor"
 }
 ```
+---
 
 # Executando o projeto
 
