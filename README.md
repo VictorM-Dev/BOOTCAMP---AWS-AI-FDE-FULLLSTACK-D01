@@ -334,6 +334,7 @@ Pré-requisitos: **Docker** e extensão **Dev Containers** no VS Code.
 4. Execute as migrations:
    ```bash
    npx prisma migrate deploy --config prisma.config.ts
+   npx prisma generate
    ```
 5. Inicie o servidor:
    ```bash
